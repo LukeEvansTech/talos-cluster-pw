@@ -1,0 +1,131 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+---
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.7.5
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.30.3
+
+clusterName: "talos-cluster"
+endpoint: https://:6443
+clusterPodNets:
+  - "172.22.0.0/16"
+clusterSvcNets:
+  - "172.24.0.0/16"
+additionalApiServerCertSans: &sans
+  - ""
+  - 127.0.0.1 # KubePrism
+  - "core.codelooks.com"
+additionalMachineCertSans: *sans
+
+# Disable built-in Flannel to use Cilium
+cniConfig:
+  name: none
+
+nodes:
+  - hostname: "pw-talos-01"
+    ipAddress: "10.96.8.91"
+    installDiskSelector:
+      serial: "SJC5N430411205H4H"
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer-secureboot/9f91df0fefa75947152b0b384f541d8247c6ae4c5feb584d338731ff7f4bbb14
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "ac:1f:6b:2d:c0:88"
+        dhcp: false
+        addresses:
+          - "10.96.8.91/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.96.8.10"
+        mtu: 1500
+        vip:
+          ip: ""
+    extraManifests:
+      - gpu-worker-patch.yaml
+  - hostname: "pw-talos-02"
+    ipAddress: "10.96.8.93"
+    installDiskSelector:
+      serial: "SNC6N446610806B52"
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer-secureboot/9f91df0fefa75947152b0b384f541d8247c6ae4c5feb584d338731ff7f4bbb14
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "ac:1f:6b:2d:c0:f2"
+        dhcp: false
+        addresses:
+          - "10.96.8.93/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.96.8.10"
+        mtu: 1500
+        vip:
+          ip: ""
+    extraManifests:
+      - gpu-worker-patch.yaml
+  - hostname: "pw-talos-03"
+    ipAddress: "10.96.8.95"
+    installDiskSelector:
+      serial: "SJC5N430410305H24"
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer-secureboot/9f91df0fefa75947152b0b384f541d8247c6ae4c5feb584d338731ff7f4bbb14
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "ac:1f:6b:2c:e4:02"
+        dhcp: false
+        addresses:
+          - "10.96.8.95/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "10.96.8.10"
+        mtu: 1500
+        vip:
+          ip: ""
+    extraManifests:
+      - gpu-worker-patch.yaml
+
+# Global patches
+patches:
+  - # Configure NTP
+    |-
+    machine:
+      time:
+        disabled: false
+        servers:
+          - uk.pool.ntp.org
+  - # Encrypt system disk with TPM
+    |-
+    machine:
+      systemDiskEncryption:
+        ephemeral:
+          provider: luks2
+          keys:
+            - slot: 0
+              tpm: {}
+        state:
+          provider: luks2
+          keys:
+            - slot: 0
+              tpm: {}
+  - "@./patches/global/cluster-discovery.yaml"
+  - "@./patches/global/containerd.yaml"
+  - "@./patches/global/disable-search-domain.yaml"
+  - "@./patches/global/gpu-worker-patch.yaml"
+  - "@./patches/global/hostdns.yaml"
+  - "@./patches/global/kubelet.yaml"
+  - "@./patches/global/openebs-local.yaml"
+  - "@./patches/global/sysctl.yaml"
+
+# Controller patches
+controlPlane:
+  patches:
+    - "@./patches/controller/api-access.yaml"
+    - "@./patches/controller/cluster.yaml"
+    - "@./patches/controller/disable-admission-controller.yaml"
+    - "@./patches/controller/etcd.yaml"
+
