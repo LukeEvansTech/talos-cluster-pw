@@ -6,13 +6,13 @@ talosVersion: v1.7.5
 kubernetesVersion: v1.30.3
 
 clusterName: "talos-cluster"
-endpoint: https://:6443
+endpoint: https://10.96.8.80:6443
 clusterPodNets:
   - "172.22.0.0/16"
 clusterSvcNets:
   - "172.24.0.0/16"
 additionalApiServerCertSans: &sans
-  - ""
+  - "10.96.8.80"
   - 127.0.0.1 # KubePrism
   - "core.codelooks.com"
 additionalMachineCertSans: *sans
@@ -41,9 +41,9 @@ nodes:
             gateway: "10.96.8.10"
         mtu: 1500
         vip:
-          ip: ""
+          ip: "10.96.8.80"
     extraManifests:
-      - gpu-worker-patch.yaml
+      - ./patches/global/gpu-worker-patch.yaml
   - hostname: "pw-talos-02"
     ipAddress: "10.96.8.93"
     installDiskSelector:
@@ -63,9 +63,9 @@ nodes:
             gateway: "10.96.8.10"
         mtu: 1500
         vip:
-          ip: ""
+          ip: "10.96.8.80"
     extraManifests:
-      - gpu-worker-patch.yaml
+      - ./patches/global/gpu-worker-patch.yaml
   - hostname: "pw-talos-03"
     ipAddress: "10.96.8.95"
     installDiskSelector:
@@ -85,9 +85,9 @@ nodes:
             gateway: "10.96.8.10"
         mtu: 1500
         vip:
-          ip: ""
+          ip: "10.96.8.80"
     extraManifests:
-      - gpu-worker-patch.yaml
+      - ./patches/global/gpu-worker-patch.yaml
 
 # Global patches
 patches:
