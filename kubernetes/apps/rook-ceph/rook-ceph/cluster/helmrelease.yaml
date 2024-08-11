@@ -23,11 +23,13 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   dependsOn:
     - name: rook-ceph-operator
       namespace: rook-ceph
-    # - name: snapshot-controller
-    #   namespace: storage
+    - name: snapshot-controller
+      namespace: storage
   values:
     monitoring:
       enabled: true
@@ -35,6 +37,8 @@ spec:
     ingress:
       dashboard:
         ingressClassName: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         host:
           name: rook.${SECRET_DOMAIN}
           path: /
@@ -216,6 +220,8 @@ spec:
         ingress:
           enabled: true
           ingressClassName: internal
+          annotations:
+            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           host:
             name: rgw.${SECRET_DOMAIN}
             path: /
