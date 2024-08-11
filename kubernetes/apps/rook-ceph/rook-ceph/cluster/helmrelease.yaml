@@ -36,8 +36,10 @@ spec:
       dashboard:
         ingressClassName: internal
         host:
-          name: &host rook.${SECRET_DOMAIN}
-          path: /
+          - name: rook.${SECRET_DOMAIN}
+            path: /
+          - name: rook.${SECRET_INTERNAL_DOMAIN}
+            path: /
     toolbox:
       enabled: true
     configOverride: |
@@ -217,8 +219,7 @@ spec:
           enabled: true
           ingressClassName: internal
           host:
-            name: &host rgw.${SECRET_DOMAIN}
-            path: /
-          tls:
-            - hosts:
-                - *host
+            - name: rgw.${SECRET_DOMAIN}
+              path: /
+            - name: rgw.${SECRET_INTERNAL_DOMAIN}
+              path: /
