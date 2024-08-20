@@ -49,7 +49,7 @@ spec:
               # BAZARR__AUTHENTICATION_METHOD: Forms
               BAZARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
               BAZARR__INSTANCE_NAME: Bazarr
-              BAZARR__PORT: &port 80
+              # BAZARR__PORT: &port 80
               BAZARR__LOG_LEVEL: info
               BAZARR__THEME: dark
               TZ: ${TIMEZONE}
@@ -61,7 +61,7 @@ spec:
                   spec:
                     httpGet:
                       path: /health
-                      port: *port
+                      port: &port 6767
                     initialDelaySeconds: 0
                     periodSeconds: 10
                     timeoutSeconds: 1
