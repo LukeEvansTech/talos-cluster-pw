@@ -6,7 +6,7 @@ resources:
   - ./namespace.yaml
     # Flux-Kustomizations
   - ./changedetection/ks.yaml
-  # - ./homebox/ks.yaml
+  - ./homebox/ks.yaml
   # - ./homepage/ks.yaml
   # - ./miniflux/ks.yaml
   # - ./powershelluniversal/ks.yaml
