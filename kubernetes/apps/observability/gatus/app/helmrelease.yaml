@@ -121,10 +121,9 @@ spec:
           gethomepage.dev/widget.url: http://gatus.observability
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host:  status.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   identifier: app
                   port: http
