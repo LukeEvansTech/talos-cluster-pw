@@ -163,7 +163,7 @@ spec:
           - path: /movies4k
       scripts:
         type: configMap
-        name: bazarr-scripts
+        name: bazarr-configmap
         defaultMode: 0775
         globalMounts:
           - readOnly: true
