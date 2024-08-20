@@ -163,9 +163,9 @@ spec:
           - path: /movies4k
       scripts:
         type: configMap
-        name: bazarr-configmap
+        name: bazarr-scripts
         defaultMode: 0775
         globalMounts:
-          - path: /scripts/post-process.sh
-            subPath: post-process.sh
-            readOnly: true
+          - readOnly: true
+      tmp:
+        type: emptyDir
