@@ -47,12 +47,12 @@ spec:
               tag: 1.4.3
             env:
               # BAZARR__AUTHENTICATION_METHOD: Forms
-              BAZARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              BAZARR__INSTANCE_NAME: Bazarr
+              # BAZARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              # BAZARR__INSTANCE_NAME: Bazarr
               # BAZARR__PORT: &port 80
               BAZARR__LOG_LEVEL: info
               BAZARR__THEME: dark
-              TZ: ${TIMEZONE}
+              # TZ: ${TIMEZONE}
             envFrom: *envFrom
             probes:
                 liveness: &probes
