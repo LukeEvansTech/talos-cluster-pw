@@ -5,7 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
     # Flux-Kustomizations
-  # - ./changedetection/ks.yaml
+  - ./changedetection/ks.yaml
   # - ./homebox/ks.yaml
   # - ./homepage/ks.yaml
   # - ./miniflux/ks.yaml
