@@ -8,7 +8,7 @@ resources:
   - ./changedetection/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
-  # - ./miniflux/ks.yaml
+  - ./miniflux/ks.yaml
   # - ./powershelluniversal/ks.yaml
   # - ./linkwarden/ks.yaml
   # - ./theme-park/ks.yaml
