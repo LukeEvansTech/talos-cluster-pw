@@ -79,24 +79,41 @@ spec:
             port: *port
     ingress:
       app:
-        className: external
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Video
-          gethomepage.dev/name: Overseerr
-          gethomepage.dev/icon: overseerr.png
-          gethomepage.dev/description: Media Request Management
-          gethomepage.dev/widget.type: overseerr
-          gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        className: internal
         hosts:
-          - host:  "requests.${SECRET_DOMAIN}"
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+          - host: "{{ .Release.Name }}.${SECRET_INTERNAL_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+    # ingress:
+    #   app:
+    #     className: external
+    #     annotations:
+    #       gethomepage.dev/enabled: "true"
+    #       gethomepage.dev/group: Video
+    #       gethomepage.dev/name: Overseerr
+    #       gethomepage.dev/icon: overseerr.png
+    #       gethomepage.dev/description: Media Request Management
+    #       gethomepage.dev/widget.type: overseerr
+    #       gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local
+    #       gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    #     hosts:
+    #       - host:  "requests.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
     persistence:
       config:
         existingClaim: overseerr
