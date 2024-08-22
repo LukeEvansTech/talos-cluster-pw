@@ -80,6 +80,16 @@ spec:
     ingress:
       app:
         className: internal
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Video
+          gethomepage.dev/name: Overseerr
+          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/description: Media Request Management
+          gethomepage.dev/widget.type: overseerr
+          gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -97,15 +107,15 @@ spec:
     # ingress:
     #   app:
     #     className: external
-    #     annotations:
-    #       gethomepage.dev/enabled: "true"
-    #       gethomepage.dev/group: Video
-    #       gethomepage.dev/name: Overseerr
-    #       gethomepage.dev/icon: overseerr.png
-    #       gethomepage.dev/description: Media Request Management
-    #       gethomepage.dev/widget.type: overseerr
-    #       gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local
-    #       gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
+        # annotations:
+        #   gethomepage.dev/enabled: "true"
+        #   gethomepage.dev/group: Video
+        #   gethomepage.dev/name: Overseerr
+        #   gethomepage.dev/icon: overseerr.png
+        #   gethomepage.dev/description: Media Request Management
+        #   gethomepage.dev/widget.type: overseerr
+        #   gethomepage.dev/widget.url: http://overseerr.media.svc.cluster.local
+        #   gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_OVERSEERR_TOKEN}}` }}"
     #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
     #     hosts:
     #       - host:  "requests.${SECRET_DOMAIN}"
