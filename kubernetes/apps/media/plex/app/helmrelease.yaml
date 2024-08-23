@@ -107,16 +107,16 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Video
-          gethomepage.dev/name: Plex
-          gethomepage.dev/app: *app
-          gethomepage.dev/icon: plex.png
-          gethomepage.dev/description: Media Player
-          gethomepage.dev/widget.type: plex
-          gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
-          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          # gethomepage.dev/enabled: "true"
+          # gethomepage.dev/group: Video
+          # gethomepage.dev/name: Plex
+          # gethomepage.dev/app: *app
+          # gethomepage.dev/icon: plex.png
+          # gethomepage.dev/description: Media Player
+          # gethomepage.dev/widget.type: plex
+          # gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
+          # gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
+          # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           # nginx.ingress.kubernetes.io/configuration-snippet: ${THEME_PARK_SNIPPET}
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
