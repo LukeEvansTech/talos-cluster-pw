@@ -48,9 +48,6 @@ spec:
               NVIDIA_VISIBLE_DEVICES: "all"
               NVIDIA_DRIVER_CAPABILITIES: "all"
               HARDWARE_DEVICE_PATH: "/dev/nvidia0"
-            envFrom:
-              - secretRef:
-                  name: *app
             probes:
               liveness: &probes
                 enabled: true
