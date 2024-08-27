@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app plex
+  name: plex
 spec:
   interval: 30m
   chart:
@@ -36,21 +36,11 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/plex
-              tag: 1.40.5.8897-e5987a19d@sha256:6ff4d26ac66291fb01518ee8023841f50915dcc036ab6c55c3b56aab78e989c1
+              tag: 1.40.2.8395-c67dce28e@sha256:3861cc940ecdf97b773fa24d826407cea86559d0f26366d7acd10cef1704f46c
             env:
-              TZ: "${TIMEZONE}"
-              ALLOWED_NETWORKS: "${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
-              PLEX_ADVERTISE_URL: "http://${SVC_PLEX_ADDR}:32400,https://plex.${SECRET_DOMAIN}"
-              PLEX_PREFERENCE_1: "AllowMediaDeletion=0"
-              PLEX_PREFERENCE_2: "EnableIPv6=0"
-              PLEX_PREFERENCE_3: "FriendlyName=Talos Plex"
-              PLEX_PREFERENCE_4: "LanNetworksBandwidth=${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
-              NVIDIA_VISIBLE_DEVICES: "all"
-              NVIDIA_DRIVER_CAPABILITIES: "all"
-              HARDWARE_DEVICE_PATH: "/dev/nvidia0"
-            envFrom:
-              - secretRef:
-                  name: *app
+              TZ: ${TIMEZONE}
+              PLEX_ADVERTISE_URL: "https://plex.${SECRET_DOMAIN},http://${SVC_PLEX_ADDR}:32400"
+              PLEX_NO_AUTH_NETWORKS: "${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
             probes:
               liveness: &probes
                 enabled: true
@@ -58,7 +48,7 @@ spec:
                 spec:
                   httpGet:
                     path: /identity
-                    port: &port 32400
+                    port: 32400
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -75,16 +65,10 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 50m
-                memory: 512Mi
-                nvidia.com/gpu: 1
+                cpu: 100m
               limits:
-                nvidia.com/gpu: 1
-                memory: 4Gi
+                memory: 16Gi
     defaultPodOptions:
-      runtimeClassName: nvidia
-      nodeSelector:
-        nvidia.feature.node.kubernetes.io/gpu: "true"
       securityContext:
         runAsNonRoot: true
         runAsUser: 568
@@ -101,23 +85,21 @@ spec:
           io.cilium/lb-ipam-ips: ${SVC_PLEX_ADDR}
         ports:
           http:
-            port: *port
+            port: 32400
     ingress:
       app:
         className: external
         annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Video
+          gethomepage.dev/name: Plex
+          gethomepage.dev/icon: plex.png
+          gethomepage.dev/description: Media Player
+          gethomepage.dev/widget.type: plex
+          gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
+          gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          # gethomepage.dev/enabled: "true"
-          # gethomepage.dev/group: Video
-          # gethomepage.dev/name: Plex
-          # gethomepage.dev/app: *app
-          # gethomepage.dev/icon: plex.png
-          # gethomepage.dev/description: Media Player
-          # gethomepage.dev/widget.type: plex
-          # gethomepage.dev/widget.url: http://plex.media.svc.cluster.local:32400
-          # gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PLEX_TOKEN}}` }}"
-          # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          # nginx.ingress.kubernetes.io/configuration-snippet: ${THEME_PARK_SNIPPET}
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -126,15 +108,9 @@ spec:
                 service:
                   identifier: app
                   port: http
-          # - host: "{{ .Release.Name }}.${SECRET_INTERNAL_DOMAIN}"
-          #   paths:
-          #     - path: /
-          #       service:
-          #         identifier: app
-          #         port: http
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: plex
         # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server
