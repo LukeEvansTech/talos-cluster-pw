@@ -78,7 +78,7 @@ spec:
           http:
             port: *port
     ingress:
-      app:
+      internal:
         enabled: true
         className: internal
         annotations:
