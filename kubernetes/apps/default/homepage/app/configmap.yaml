@@ -56,9 +56,8 @@ data:
               key: {{HOMEPAGE_VAR_NEXTDNS_API}}
   settings.yaml: |
     title: Dashboard
-    # favicon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/selfhosted-light.png
+    favicon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/selfhosted-light.png
     color: gray
-    # theme: dark
     background:
       image: https://i.imgur.com/5DJSIvq.png
       blur: sm
@@ -110,7 +109,7 @@ data:
         icon: mdi-download-circle
   widgets.yaml: |
     - logo:
-        icon: https://raw.githubusercontent.com/joryirving/home-ops/main/.docs/icons/lds-transparent.png
+        icon: https://raw.githubusercontent.com/LukeEvansTech/talos-cluster/main/docs/src/assets/icons/homepage.png
     - search:
         provider: [duckduckgo, google]
         focus: false
