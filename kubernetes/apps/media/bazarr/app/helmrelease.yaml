@@ -51,7 +51,7 @@ spec:
               # BAZARR__INSTANCE_NAME: Bazarr
               BAZARR__LOG_LEVEL: info
               BAZARR__THEME: dark
-              # TZ: ${TIMEZONE}
+              TZ: ${TIMEZONE}
             envFrom: *envFrom
             probes:
                 liveness: &probes
