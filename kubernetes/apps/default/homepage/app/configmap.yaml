@@ -40,7 +40,7 @@ data:
               href: 'https://kubesearch.dev/'
         - home-ops:
             - icon: github.png
-              href: 'https://github.com/codelooks-com/k3s-cluster'
+              href: 'https://github.com/LukeEvansTech/talos-cluster'
   docker.yaml: ""
   kubernetes.yaml: |
     mode: cluster
@@ -117,7 +117,7 @@ data:
         target: _blank
     - greeting:
         text_size: xl
-        text: "Howdy Hey!"
+        text: "Welcome"
     - kubernetes:
         cluster:
           cpu: true
