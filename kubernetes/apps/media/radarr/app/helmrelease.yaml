@@ -128,13 +128,13 @@ spec:
         type: emptyDir
       downloads:
         type: nfs
-        server: storage.${SECRET_INTERNAL_DOMAIN}
+        server: ${SECRET_STORAGE_SERVER}
         path: /mnt/pool/downloads
         globalMounts:
           - path: /downloads
       movies:
         type: nfs
-        server: storage.${SECRET_INTERNAL_DOMAIN}
+        server: ${SECRET_STORAGE_SERVER}
         path: /mnt/pool/movies
         globalMounts:
           - path: /movies
