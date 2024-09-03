@@ -7,6 +7,7 @@ resources:
     # Flux-Kustomizations
   - ./bazarr/ks.yaml
   - ./flaresolverr/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
