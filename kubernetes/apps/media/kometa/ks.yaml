@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -12,7 +11,11 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: plex
-  path: ./kubernetes/apps/media/wizarr/app
+    - name: tautulli
+    - name: radarr
+    - name: sonarr
+    - name: external-secrets-stores
+  path: ./kubernetes/main/media/kometa
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,7 +24,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-postBuild:
+  postBuild:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 10Gi
