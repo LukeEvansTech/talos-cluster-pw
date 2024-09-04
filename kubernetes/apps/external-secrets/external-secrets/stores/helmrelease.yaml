@@ -39,7 +39,7 @@ spec:
               ORG_ID:
                 valueFrom:
                   secretKeyRef:
-                    name: bws-secret
+                    name: bitwarden-access-token
                     key: ORG_ID
             # probes:
             #   liveness:
