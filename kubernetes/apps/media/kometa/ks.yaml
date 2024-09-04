@@ -15,7 +15,7 @@ spec:
     - name: radarr
     - name: sonarr
     - name: external-secrets-stores
-  path: ./kubernetes/main/media/kometa
+  path: ./kubernetes/apps/media/kometa
   prune: true
   sourceRef:
     kind: GitRepository
