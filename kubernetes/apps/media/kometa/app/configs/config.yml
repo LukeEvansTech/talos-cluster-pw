@@ -29,7 +29,7 @@ libraries:
       quality_profile: HD - Anime
       series_type: anime
 
-  Movies:
+  Films:
     run_order:
       - collections
       - metadata
@@ -57,7 +57,7 @@ libraries:
       mass_critic_rating_update: mdb_metacritic
       mass_user_rating_update: imdb
 
-  TV Shows:
+  TV Programmes:
     run_order:
       - collections
       - metadata
