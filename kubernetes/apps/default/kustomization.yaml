@@ -9,6 +9,7 @@ resources:
   - ./cyberchef/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
+  - ./it-tools/ks.yaml
   - ./miniflux/ks.yaml
   # - ./powershelluniversal/ks.yaml
   - ./linkwarden/ks.yaml
