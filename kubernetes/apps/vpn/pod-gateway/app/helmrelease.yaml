@@ -54,18 +54,6 @@ spec:
           # Currently need this in K8s to hit Cluster DNS for lookup
           - name: DOT
             value: "off"
-          # - name: SERVER_CITIES
-          #   value: Zurich
-          # - name: WIREGUARD_PRIVATE_KEY
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: downloads-gateway-vpnconfig
-          #       key: WIREGUARD_PRIVATE_KEY
-          # - name: WIREGUARD_ADDRESSES
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: downloads-gateway-vpnconfig
-          #       key: WIREGUARD_ADDRESSES
         envFrom:
           - secretRef:
               name: downloads-gateway-vpnconfig
