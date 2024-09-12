@@ -66,6 +66,9 @@ spec:
           #     secretKeyRef:
           #       name: downloads-gateway-vpnconfig
           #       key: WIREGUARD_ADDRESSES
+        envFrom:
+          - secretRef:
+              name: downloads-gateway-vpnconfig
         resources:
           requests:
             cpu: 5m
