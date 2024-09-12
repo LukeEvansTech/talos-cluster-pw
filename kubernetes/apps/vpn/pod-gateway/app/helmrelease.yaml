@@ -68,7 +68,7 @@ spec:
           #       key: WIREGUARD_ADDRESSES
         envFrom:
           - secretRef:
-              name: downloads-gateway-vpnconfig
+              name: pod-gateway-secret
         resources:
           requests:
             cpu: 5m
