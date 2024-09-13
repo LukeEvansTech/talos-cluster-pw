@@ -39,7 +39,7 @@ spec:
           - name: VPN_INTERFACE
             value: wg0
           # Currently need this in K8s to hit Cluster DNS for lookup
-          - name: FIREWALL
+          - name: FIREWALL_ENABLED_DISABLING_IT_SHOOTS_YOU_IN_YOUR_FOOT
             value: "off"
           # Currently need this in K8s to hit Cluster DNS for lookup
           - name: DOT
