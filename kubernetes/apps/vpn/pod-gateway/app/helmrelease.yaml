@@ -27,6 +27,9 @@ spec:
     DNS: 172.16.1.1
     addons:
       vpn:
+        # -- Enable the VPN if you want to route through a VPN.
+        # You might also want to set VPN_BLOCK_OTHER_TRAFFIC to true
+        # for extra safeness in case the VPN does connect
         enabled: true
         type: gluetun
         gluetun:
@@ -69,13 +72,35 @@ spec:
     routed_namespaces:
       - downloads
     settings:
-      NOT_ROUTED_TO_GATEWAY_CIDRS: 10.0.0.0/8 192.168.0.0/16
+      # -- IPs not sent to the POD gateway but to the default K8S.
+      # Multiple CIDRs can be specified using blanks as separator.
+      # Example for Calico: ""172.22.0.0/16 172.24.0.0/16"
+      #
+      # This is needed, for example, in case your CNI does
+      # not add a non-default rule for the K8S addresses (Flannel does).
+      NOT_ROUTED_TO_GATEWAY_CIDRS: ${CLUSTER_PODS_CIDR} ${CLUSTER_SVCS_CIDR} ${CR_LAN_CIDR} ${GH_LAN_CIDR} ${PW_LAN_CIDR}
+
+      # -- Prevent non VPN traffic to leave the gateway
       VPN_BLOCK_OTHER_TRAFFIC: true
+
+      # -- If using a VPN, interface name created by it
       VPN_INTERFACE: wg0
-      VPN_LOCAL_CIDRS: 10.0.0.0/8 192.168.0.0/16
+
+      # -- Traffic to these IPs will be sent through the K8S gateway
+      VPN_LOCAL_CIDRS: ${CLUSTER_PODS_CIDR} ${CLUSTER_SVCS_CIDR} ${CR_LAN_CIDR} ${GH_LAN_CIDR} ${PW_LAN_CIDR}
+
+      # -- If VPN_BLOCK_OTHER_TRAFFIC is true, allow VPN traffic over this port
       VPN_TRAFFIC_PORT: "51820"
+
+      # -- Vxlan ID to use
       VXLAN_ID: 43
+
+      # -- VXLAN needs an /24 IP range not conflicting with K8S and local IP ranges
       VXLAN_IP_NETWORK: 172.16.1
+
+      # -- DNS queries to these domains will be resolved by K8S DNS instead of
+      # the default (typically the VPN client changes it)
+      DNS_LOCAL_CIDRS: "local"
 
     webhook:
       image:
