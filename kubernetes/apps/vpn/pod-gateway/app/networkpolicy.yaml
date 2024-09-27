@@ -22,8 +22,9 @@ spec:
         - cluster
     - toEndpoints:
         - matchLabels:
-            k8s:io.kubernetes.pod.namespace: database
+            cnpg.io/cluster: postgres16
+            io.kubernetes.pod.namespace: cnpg
       toPorts:
         - ports:
-            - port: "5432"
+            - port: '5432'
               protocol: TCP
