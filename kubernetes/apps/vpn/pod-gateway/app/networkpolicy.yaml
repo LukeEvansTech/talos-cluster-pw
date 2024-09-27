@@ -20,3 +20,10 @@ spec:
               protocol: UDP
     - toEntities:
         - cluster
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: database
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
