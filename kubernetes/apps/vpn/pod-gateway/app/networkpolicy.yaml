@@ -1,0 +1,30 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: pod-gateway
+  labels:
+    app.kubernetes.io/instance: pod-gateway
+    app.kubernetes.io/name: pod-gateway
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: pod-gateway
+      app.kubernetes.io/name: pod-gateway
+  egress:
+    - toCIDR:
+        - 0.0.0.0/0
+      toPorts:
+        - ports:
+            - port: "51820"
+              protocol: UDP
+    - toEntities:
+        - cluster
+    - toEndpoints:
+        - matchLabels:
+            cnpg.io/cluster: postgres16
+            io.kubernetes.pod.namespace: cnpg
+      toPorts:
+        - ports:
+            - port: '5432'
+              protocol: TCP
