@@ -78,6 +78,7 @@ spec:
               TZ: ${TIMEZONE}
               FIREWALL: on
               FIREWALL_DEBUG: on
+              #  Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
               FIREWALL_INPUT_PORTS: "80,9999"
               FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
               HEALTH_SERVER_ADDRESS: ":9999"
@@ -87,6 +88,7 @@ spec:
               VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
               UPDATER_PERIOD: 12h
+              # is absolutely needed if the container is expected to be able to resolve or communicate to any cluster services, without it cluster services cannot be resolved consistently or at all in many setups.
               DNS_KEEP_NAMESERVER: on
             envFrom:
               - secret: sabnzbd-secret
