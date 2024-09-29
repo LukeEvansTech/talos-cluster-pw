@@ -51,14 +51,18 @@ spec:
               - secretRef:
                   name: sabnzbd-secret
             probes:
-              liveness: &probe
+              liveness:
                 enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api?mode=version
-                    port: *port
-              readiness: *probe
+              readiness:
+                enabled: false
+              # liveness: &probe
+              #   enabled: false
+              #   custom: true
+              #   spec:
+              #     httpGet:
+              #       path: /api?mode=version
+              #       port: *port
+              # readiness: *probe
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -92,24 +96,24 @@ spec:
               DNS_KEEP_NAMESERVER: on
             envFrom:
               - secret: sabnzbd-secret
-            probes:
-              liveness:
-                enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 9999
-              startup:
-                enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 9999
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  failureThreshold: 5
+            # probes:
+            #   liveness:
+            #     enabled: false
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: 9999
+            #   readiness:
+            #     enabled: false
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: 9999
+            #       initialDelaySeconds: 10
+            #       periodSeconds: 10
+            #       failureThreshold: 5
             resources:
               requests:
                 memory: 48Mi
