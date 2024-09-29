@@ -50,19 +50,15 @@ spec:
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              # liveness: &probe
-              #   enabled: false
-              #   custom: true
-              #   spec:
-              #     httpGet:
-              #       path: /api?mode=version
-              #       port: *port
-              # readiness: *probe
+            # probes:
+            #   liveness: &probe
+            #     enabled: false
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /api?mode=version
+            #         port: *port
+            #   readiness: *probe
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
