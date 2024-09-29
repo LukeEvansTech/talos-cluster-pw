@@ -76,7 +76,7 @@ spec:
               tag: v3.39.0
             env:
               TZ: ${TIMEZONE}
-              FIREWALL: on
+              FIREWALL: false
               FIREWALL_DEBUG: on
               #  Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
               FIREWALL_INPUT_PORTS: "80,9999"
