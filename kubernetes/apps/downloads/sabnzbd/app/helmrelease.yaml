@@ -52,7 +52,7 @@ spec:
                   name: sabnzbd-secret
             probes:
               liveness: &probe
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
@@ -76,13 +76,13 @@ spec:
               tag: v3.39.0
             env:
               TZ: ${TIMEZONE}
-              FIREWALL: false
+              FIREWALL: true
               FIREWALL_DEBUG: on
               #  Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
-              FIREWALL_INPUT_PORTS: *port
+              FIREWALL_INPUT_PORTS: 9999
               FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
-              # HEALTH_SERVER_ADDRESS: ":9999"
-              # HEALTH_VPN_DURATION_INITIAL: 60s
+              HEALTH_SERVER_ADDRESS: ":9999"
+              HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
               STORAGE_FILEPATH: ""  # prevent memory spike and avoid I/O
               VPN_INTERFACE: wg0
@@ -92,24 +92,24 @@ spec:
               DNS_KEEP_NAMESERVER: on
             envFrom:
               - secret: sabnzbd-secret
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /
-            #         port: 9999
-            #   startup:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /
-            #         port: 9999
-            #       initialDelaySeconds: 10
-            #       periodSeconds: 10
-            #       failureThreshold: 5
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 5
             resources:
               requests:
                 memory: 48Mi
