@@ -51,26 +51,15 @@ spec:
               - secretRef:
                   name: sabnzbd-secret
             probes:
-              liveness: &probes
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /api?mode=version
                     port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-            securityContext:
-              runAsUser: 568
-              runAsGroup: 568
-              fsGroup: 568
-              fsGroupChangePolicy: OnRootMismatch
-              supplementalGroups: [10000]
-              seccompProfile: { type: RuntimeDefault }
-              runAsNonRoot: true
+              readiness: *probe
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -79,7 +68,7 @@ spec:
                 cpu: 100m
               limits:
                 memory: 8Gi
-          # Configure the gluetun sidecar
+        initContainers:
           gluetun:
             dependsOn: app
             image:
@@ -90,22 +79,17 @@ spec:
               FIREWALL: on
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
+              FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
               HEALTH_SERVER_ADDRESS: ":9999"
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
               STORAGE_FILEPATH: ""  # prevent memory spike and avoid I/O
-              FIREWALL_OUTBOUND_SUBNETS: ${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}
+              VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
               UPDATER_PERIOD: 12h
               DNS_KEEP_NAMESERVER: on
             envFrom:
               - secret: sabnzbd-secret
-            # Configure the container-specific securityContext
-            securityContext:
-              capabilities:
-                add:
-                  - NET_ADMIN
-              allowPrivilegeEscalation: false
             probes:
               liveness:
                 enabled: true
@@ -114,21 +98,41 @@ spec:
                   httpGet:
                     path: /
                     port: 9999
-                  initialDelaySeconds: 30
-                  periodSeconds: 10
-                  timeoutSeconds: 3
-                  failureThreshold: 12
               startup:
-                enabled: false
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 568
-    #     runAsGroup: 568
-    #     fsGroup: 568
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     supplementalGroups: [10000]
-    #     seccompProfile: { type: RuntimeDefault }
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 5
+            resources:
+              requests:
+                memory: 48Mi
+              limits:
+                memory: 96Mi
+                kernel.org/tun: 1
+            restartPolicy: Always
+            securityContext:
+              <<: *securityContext
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
+              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
+        pod:
+          labels:
+            gluetun: "true"
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: sabnzbd
@@ -165,6 +169,14 @@ spec:
     persistence:
       config:
         existingClaim: sabnzbd
+      empty:
+        type: emptyDir
+        sizeLimit: 20Mi
+        globalMounts:
+          - path: /gluetun
+            subPath: gluetun
+          - path: /tmp
+            subPath: tmp
       logs:
         type: emptyDir
         globalMounts:
