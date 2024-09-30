@@ -114,7 +114,7 @@ spec:
                   httpGet:
                     path: /
                     port: 9999
-                  initialDelaySeconds: 10
+                  initialDelaySeconds: 120
                   periodSeconds: 10
                   failureThreshold: 5
             resources:
