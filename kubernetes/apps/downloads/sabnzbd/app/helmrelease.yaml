@@ -84,7 +84,8 @@ spec:
               HEALTH_SERVER_ADDRESS: ":9999"
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
-              STORAGE_FILEPATH: ""  # prevent memory spike and avoid I/O
+              # prevent memory spike and avoid I/O
+              STORAGE_FILEPATH: ""
               VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
               UPDATER_PERIOD: 12h
@@ -92,24 +93,24 @@ spec:
               DNS_KEEP_NAMESERVER: on
             envFrom:
               - secret: sabnzbd-secret
-            # probes:
-            #   liveness:
-            #     enabled: false
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /
-            #         port: 9999
-            #   readiness:
-            #     enabled: false
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /
-            #         port: 9999
-            #       initialDelaySeconds: 10
-            #       periodSeconds: 10
-            #       failureThreshold: 5
+            probes:
+              liveness:
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+              readiness:
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 5
             resources:
               requests:
                 memory: 48Mi
