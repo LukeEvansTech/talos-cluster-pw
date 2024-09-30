@@ -77,7 +77,7 @@ spec:
               TZ: ${TIMEZONE}
               FIREWALL: true
               FIREWALL_DEBUG: on
-              #  Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
+              # Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
               FIREWALL_INPUT_PORTS: 9999
               FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
               HEALTH_SERVER_ADDRESS: ":9999"
@@ -123,6 +123,11 @@ spec:
               runAsNonRoot: false
               runAsUser: 0
               capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
+            volumeMounts:
+              - name: gluetun
+                mountPath: /gluetun
+              - name: tmp
+                mountPath: /tmp/gluetun
         pod:
           labels:
             gluetun: "true"
