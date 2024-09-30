@@ -101,14 +101,14 @@ spec:
               - secret: sabnzbd-secret
             probes:
               liveness:
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: 9999
               readiness:
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
