@@ -124,7 +124,6 @@ spec:
                 memory: 96Mi
             restartPolicy: Always
             securityContext:
-              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               runAsNonRoot: false
               runAsUser: 0
