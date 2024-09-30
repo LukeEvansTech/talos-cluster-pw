@@ -183,8 +183,13 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /config/log
-      tmp:
+      run:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /run
+          - path: /var/run
       downloads:
         type: nfs
         server: storage.${SECRET_INTERNAL_DOMAIN}
