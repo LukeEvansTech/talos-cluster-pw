@@ -62,7 +62,7 @@ spec:
               # is absolutely needed if the container is expected to be able to resolve or communicate to any cluster services, without it cluster services cannot be resolved consistently or at all in many setups.
               DNS_KEEP_NAMESERVER: on
             envFrom:
-              - secret: sabnzbd-secret
+              - secret: prowlarr-secret
             probes:
               liveness:
                 enabled: false
