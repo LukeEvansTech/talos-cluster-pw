@@ -59,10 +59,17 @@ spec:
             #         path: /api?mode=version
             #         port: *port
             #   readiness: *probe
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              runAsNonRoot: true
+              runAsUser: 568
+              runAsGroup: 568
+              fsGroup: 568
+              fsGroupChangePolicy: OnRootMismatch
+              supplementalGroups: [10000]
+              seccompProfile: { type: RuntimeDefault }
             resources:
               requests:
                 cpu: 100m
@@ -117,23 +124,14 @@ spec:
                 memory: 96Mi
             restartPolicy: Always
             securityContext:
-              <<: *securityContext
-              readOnlyRootFilesystem: false
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               runAsNonRoot: false
               runAsUser: 0
               capabilities: { add: ["NET_ADMIN"] }
         pod:
           labels:
             gluetun: "true"
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 568
-    #     runAsGroup: 568
-    #     fsGroup: 568
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     supplementalGroups: [10000]
-    #     seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: sabnzbd
