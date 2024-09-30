@@ -123,11 +123,6 @@ spec:
               runAsNonRoot: false
               runAsUser: 0
               capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
-            volumeMounts:
-              - name: gluetun
-                mountPath: /gluetun
-              - name: tmp
-                mountPath: /tmp/gluetun
         pod:
           labels:
             gluetun: "true"
