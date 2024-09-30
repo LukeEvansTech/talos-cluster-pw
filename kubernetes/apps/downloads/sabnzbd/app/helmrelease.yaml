@@ -50,15 +50,15 @@ spec:
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
-            # probes:
-            #   liveness: &probe
-            #     enabled: false
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /api?mode=version
-            #         port: *port
-            #   readiness: *probe
+            probes:
+              liveness: &probe
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api?mode=version
+                    port: *port
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -85,7 +85,7 @@ spec:
               FIREWALL: true
               FIREWALL_DEBUG: on
               # Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
-              FIREWALL_INPUT_PORTS: 9999
+              FIREWALL_INPUT_PORTS: 80,9999
               FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
               HEALTH_SERVER_ADDRESS: "127.0.0.1:9999"
               HEALTH_VPN_DURATION_INITIAL: 60s
