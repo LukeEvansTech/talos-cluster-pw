@@ -124,10 +124,13 @@ spec:
                 memory: 96Mi
             restartPolicy: Always
             securityContext:
-              capabilities:
-                add:
-                  - NET_ADMIN
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
+              capabilities:
+                drop: ["ALL"]
+                add: ["NET_ADMIN", "NET_RAW"]
         pod:
           labels:
             gluetun: "true"
