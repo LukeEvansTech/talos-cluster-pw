@@ -125,7 +125,7 @@ spec:
             restartPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              # readOnlyRootFilesystem: false
               # runAsNonRoot: false
               # runAsUser: 0
               capabilities:
