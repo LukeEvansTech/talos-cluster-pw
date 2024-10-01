@@ -130,7 +130,7 @@ spec:
               runAsUser: 0
               capabilities:
                 drop: ["ALL"]
-                add: ["NET_ADMIN", "NET_RAW"]
+                add: ["NET_ADMIN"]
         pod:
           labels:
             gluetun: "true"
