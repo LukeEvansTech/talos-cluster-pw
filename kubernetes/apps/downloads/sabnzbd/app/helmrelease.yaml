@@ -125,11 +125,9 @@ spec:
             restartPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
-              # readOnlyRootFilesystem: false
-              # runAsNonRoot: false
-              # runAsUser: 0
               capabilities:
-                add: ["NET_ADMIN"]
+                add:
+                  - NET_ADMIN
         pod:
           labels:
             gluetun: "true"
