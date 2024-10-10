@@ -56,6 +56,7 @@ spec:
             memory: 128M
           limits:
             memory: 128M
+            kernel.org/tun: 1
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
