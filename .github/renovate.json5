@@ -56,6 +56,19 @@
   "commitMessageSuffix": "",
   // package rules
   "packageRules": [
+    //package rules
+    {
+      "description": [
+        "Loose versioning for non-semver packages"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackagePatterns": [
+        "plex"
+      ],
+      "versioning": "loose"
+    },
     // automerge
     {
       "description": [
