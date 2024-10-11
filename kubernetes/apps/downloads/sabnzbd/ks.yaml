@@ -25,5 +25,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      # GATUS_SUBDOMAIN: sabnzbd
       VOLSYNC_CAPACITY: 15Gi
