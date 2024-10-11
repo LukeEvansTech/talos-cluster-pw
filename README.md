@@ -17,4 +17,3 @@ _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 [![Pod-Count](https://kromgo.codelooks.com/cluster_pod_count?format=badge&style=flat-square)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
 [![CPU-Usage](https://kromgo.codelooks.com/cluster_cpu_usage?format=badge&style=flat-square)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
 [![Memory-Usage](https://kromgo.codelooks.com/cluster_memory_usage?format=badge&style=flat-square)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
-[![Power-Usage](https://kromgo.codelooks.com/cluster_power_usage?format=badge&style=flat-square)](https://github.com/kashalls/kromgo/)
