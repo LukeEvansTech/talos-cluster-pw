@@ -11,18 +11,13 @@ spec:
     labels:
       app.kubernetes.io/name: &app smtp-relay
       app.kubernetes.io/instance: *app
-  path: "./kubernetes/apps/network/smtp-relay/app"
+  path: "./kubernetes/apps/infrastructure/smtp-relay/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: home-kubernetes
   wait: true
   interval: 10m
-  retryInterval: 1m
   timeout: 5m
-  decryption:
-    provider: sops
   postBuild:
     substituteFrom: []
-  dependsOn:
-    - name: cluster-apps-kube-prometheus-stack-crds
