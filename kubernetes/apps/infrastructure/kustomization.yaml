@@ -6,4 +6,5 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./smtp-relay/ks.yaml
   - ./vlmcsd/ks.yaml
