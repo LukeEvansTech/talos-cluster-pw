@@ -103,3 +103,10 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 1Gi
+
+      tls:
+        type: secret
+        name: tls.smtp-relay
+        globalMounts:
+          - path: /tls
+            readOnly: true
