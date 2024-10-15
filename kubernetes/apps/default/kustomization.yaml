@@ -11,6 +11,7 @@ resources:
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
   - ./miniflux/ks.yaml
+  - ./searxng/ks.yaml
   # - ./powershelluniversal/ks.yaml
   - ./linkwarden/ks.yaml
   # - ./theme-park/ks.yaml
