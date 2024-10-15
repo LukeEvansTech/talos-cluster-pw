@@ -41,9 +41,8 @@ spec:
                 value: true
               - name: RAG_WEB_SEARCH_ENGINE
                 value: searxng
-              #TODO: Add SEARXNG_QUERY_URL
-              # - name: SEARXNG_QUERY_URL
-              #   value: http://searxng.default.svc.cluster.local:8080/search?q=<query>
+              - name: SEARXNG_QUERY_URL
+                value: http://searxng.default.svc.cluster.local:8080/search?q=<query>
             resources:
               requests:
                 cpu: 500m
