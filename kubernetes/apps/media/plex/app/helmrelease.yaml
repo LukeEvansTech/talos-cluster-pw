@@ -27,6 +27,8 @@ spec:
       namespace: rook-ceph
     - name: volsync
       namespace: storage
+    - name: nvidia-gpu-operator
+      namespace: kube-system
   values:
     controllers:
       plex:
