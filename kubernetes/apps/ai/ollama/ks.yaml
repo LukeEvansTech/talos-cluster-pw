@@ -12,13 +12,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: nvidia-device-plugin
-      namespace: kube-system
     - name: node-feature-discovery
-      namespace: kube-system
     - name: volsync
-      namespace: storage
     - name: rook-ceph-cluster
-      namespace: rook-ceph
   path: ./kubernetes/apps/ai/ollama/app
   prune: true
   sourceRef:
