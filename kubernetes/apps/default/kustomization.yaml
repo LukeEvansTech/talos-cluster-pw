@@ -11,11 +11,12 @@ resources:
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
+  - ./linkwarden/ks.yaml
+  - ./meilisearch/ks.yaml
   - ./miniflux/ks.yaml
   - ./searxng/ks.yaml
   - ./stirling-pdf/ks.yaml
   # - ./powershelluniversal/ks.yaml
-  - ./linkwarden/ks.yaml
   # - ./theme-park/ks.yaml
   - ./uptimekuma/ks.yaml
   - ./wallos/ks.yaml
