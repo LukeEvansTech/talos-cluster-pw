@@ -5,6 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
     # Flux-Kustomizations
+  - ./actual/ks.yaml
   - ./changedetection/ks.yaml
   - ./cyberchef/ks.yaml
   - ./homebox/ks.yaml
