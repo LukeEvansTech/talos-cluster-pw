@@ -77,13 +77,13 @@
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: *app
+                  identifier: hoarder
                   port: http
           - host: "{{ .Release.Name }}.${SECRET_INTERNAL_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: *app
+                  identifier: hoarder
                   port: http
     persistence:
       hoarder:
