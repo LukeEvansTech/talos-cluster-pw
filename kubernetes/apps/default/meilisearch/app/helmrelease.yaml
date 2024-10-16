@@ -34,7 +34,8 @@ spec:
               repository: docker.io/getmeili/meilisearch
               tag: v1.10
             env:
-              MEILI_ENV: production
+              MEILI_ENV: "production"
+              MEILI_NO_ANALYTICS: "true"
             envFrom:
               - secretRef:
                   name: meilisearch-secret
