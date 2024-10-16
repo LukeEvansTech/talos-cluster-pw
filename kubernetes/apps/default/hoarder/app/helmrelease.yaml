@@ -1,0 +1,128 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &name hoarder
+  namespace: hoarder
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 5m
+  targetNamespace: hoarder
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: *name
+    #defaultPodOptions:
+      #securityContext:
+        #runAsUser: 1000
+        #runAsGroup: 100
+        #fsGroup: 1000
+        #fsGroupChangePolicy: "OnRootMismatch"
+    controllers:
+      hoarder:
+        containers:
+          hoarder:
+            image:
+              repository: ghcr.io/hoarder-app/hoarder
+              tag: 0.18.0@sha256:a49249cd3d4966f1c41a2eb6d9b30e5564d769ffe65ee804859efd696159930b
+            env:
+              MEILI_ADDR: http://meilisearch.default.svc.cluster.local:7700
+              BROWSER_WEB_URL: http://hoarder-chrome:9222
+              OLLAMA_BASE_URL: "ollama.ai.svc.cluster.local:11434"
+              INFERENCE_TEXT_MODEL: "mistral"
+              INFERENCE_IMAGE_MODEL: "llava"
+              DATA_DIR: /data
+              NEXTAUTH_URL: "{{ .Release.Name }}.${SECRET_INTERNAL_DOMAIN}"
+            envFrom:
+              - secretRef:
+                  name: hoarder-secret
+            resources:
+              requests:
+                cpu: 20m
+                memory: 300Mi
+              limits:
+                cpu: 100m
+                memory: 600Mi
+          chrome:
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
+              fsGroupChangePolicy: "OnRootMismatch"
+            image:
+              repository: gcr.io/zenika-hub/alpine-chrome
+              tag: 124
+            args:
+              - --no-sandbox
+              - --disable-gpu
+              - --disable-dev-shm-usage
+              - --remote-debugging-address=0.0.0.0
+              - --remote-debugging-port=9222
+              - --hide-scrollbars
+            resources:
+              requests:
+                cpu: 50m
+                memory: 80Mi
+              #limits:
+                #cpu: 100m
+                #memory: 128Mi
+    service:
+      hoarder:
+        controller: *name
+        ports:
+          http:
+            port: 3000
+      chrome:
+        controller: *name
+        ports:
+          http:
+            port: 9222
+      meilisearch:
+        controller: *name
+        ports:
+          http:
+            port: 7700
+    ingress:
+      hoarder:
+        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+          - host: "{{ .Release.Name }}.${SECRET_INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      hoarder:
+        enabled: true
+        existingClaim: hoarder
+        advancedMounts:
+          hoarder:
+            hoarder:
+              - path: /data
+                subPath: data
+            meilisearch:
+              - path: /meili_data
+                subPath: meilisearch
