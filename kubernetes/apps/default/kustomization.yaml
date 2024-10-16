@@ -8,6 +8,7 @@ resources:
   - ./actual/ks.yaml
   - ./changedetection/ks.yaml
   - ./cyberchef/ks.yaml
+  - ./hoarder/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
