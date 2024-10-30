@@ -32,6 +32,7 @@ spec:
   values:
     controllers:
       sabnzbd:
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
