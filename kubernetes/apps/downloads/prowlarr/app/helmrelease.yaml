@@ -52,6 +52,7 @@ spec:
               TZ: ${TIMEZONE}
               FIREWALL: true
               FIREWALL_DEBUG: on
+              DOT: on
               # Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
               FIREWALL_INPUT_PORTS: 80,9999
               FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
@@ -59,7 +60,7 @@ spec:
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
               # prevent memory spike and avoid I/O
-              STORAGE_FILEPATH: ""
+              # STORAGE_FILEPATH: ""
               VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
               UPDATER_PERIOD: 12h
