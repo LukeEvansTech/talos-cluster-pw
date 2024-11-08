@@ -33,7 +33,7 @@ spec:
       namespace: storage
   values:
     controllers:
-      actual:
+      satisfactory:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
