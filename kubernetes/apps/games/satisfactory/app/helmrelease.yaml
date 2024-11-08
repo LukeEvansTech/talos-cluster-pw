@@ -108,7 +108,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: "${APP}"
+        existingClaim: *app
         globalMounts:
           - path: /config
       server-cache:
