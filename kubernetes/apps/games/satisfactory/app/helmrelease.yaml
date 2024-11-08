@@ -5,7 +5,7 @@ metadata:
   name: &app satisfactory
   namespace: games
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -22,6 +22,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
@@ -31,16 +32,10 @@ spec:
     - name: volsync
       namespace: storage
   values:
-    defaultPodOptions:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
     controllers:
-      satisfactory:
-        type: statefulset
+      actual:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -82,7 +77,15 @@ spec:
               requests:
                 memory: 4Gi
               limits:
-                memory: 16Gi
+                memory: 256M
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         enabled: true
