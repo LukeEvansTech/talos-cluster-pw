@@ -89,20 +89,39 @@
     },
     {
       "description": [
-        "Auto merge Github Actions"
+        "Auto-merge GitHub Actions for minor and patch"
       ],
       "matchManagers": [
         "github-actions"
       ],
+      "matchDatasources": [
+        "github-tags"
+      ],
       "automerge": true,
       "automergeType": "branch",
-      "ignoreTests": true,
       "matchUpdateTypes": [
         "minor",
         "patch"
       ]
     },
     // groups
+    {
+      "description": [
+        "Actions Runner Controller Group"
+      ],
+      "groupName": "Actions Runner Controller",
+      "matchPackagePatterns": [
+        "gha-runner-scale-set"
+      ],
+      "matchDatasources": [
+        "docker",
+        "helm"
+      ],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
     {
       "description": [
         "Flux Group"
@@ -116,6 +135,22 @@
         "github-tags"
       ],
       "versioning": "semver",
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
+      "description": [
+        "Rook-Ceph Group"
+      ],
+      "groupName": "Rook-Ceph",
+      "matchPackagePatterns": [
+        "rook.ceph"
+      ],
+      "matchDatasources": [
+        "helm"
+      ],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
       },
