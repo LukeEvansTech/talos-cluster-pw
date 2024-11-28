@@ -7,7 +7,17 @@
     ":dependencyDashboard",
     ":semanticCommits",
     ":automergeBranch",
-    ":timezone(Europe/London)"
+    ":timezone(Europe/London)", // timezone
+    "github>lukeevanstech/talos-cluster//.github/renovate/allowedVersions.json5",
+    "github>lukeevanstech/talos-cluster//.github/renovate/autoMerge.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/clusters.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/commitMessage.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/customManagers.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/grafanaDashboards.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/groups.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/labels.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/packageRules.json5",
+    // "github>lukeevanstech/talos-cluster//.github/renovate/semanticCommits.json5"
   ],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
@@ -68,41 +78,6 @@
         "plex"
       ],
       "versioning": "loose"
-    },
-    // automerge
-    {
-      "description": [
-        "Auto-merge container digests updates for trusted containers"
-      ],
-      "matchDatasources": [
-        "docker"
-      ],
-      "automerge": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": [
-        "digest"
-      ],
-      "matchPackagePatterns": [
-        "ghcr.io/bjw-s",
-        "ghcr.io/onedr0p"
-      ]
-    },
-    {
-      "description": [
-        "Auto-merge GitHub Actions for minor and patch"
-      ],
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchDatasources": [
-        "github-tags"
-      ],
-      "automerge": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ]
     },
     // groups
     {
