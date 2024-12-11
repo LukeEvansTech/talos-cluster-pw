@@ -93,8 +93,8 @@ spec:
                 service:
                   identifier: app
                   port: http
-    # persistence:
-    #   config:
-    #     existingClaim: *app
-    #     globalMounts:
-    #       - path: /meili_data
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /meili_data
