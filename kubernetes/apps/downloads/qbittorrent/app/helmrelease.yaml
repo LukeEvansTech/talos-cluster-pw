@@ -108,7 +108,7 @@ spec:
                   name: qbittorrent-secret
             probes:
               liveness:
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
@@ -118,7 +118,7 @@ spec:
                   periodSeconds: 30
                   failureThreshold: 5
               startup:
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
