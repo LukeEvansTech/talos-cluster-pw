@@ -41,7 +41,7 @@ spec:
               # QBT_Preferences__WebUI__AlternativeUIEnabled: true
               # QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               # QBT_Preferences__WebUI__AuthSubnetWhitelist: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
-              # QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_Preferences__WebUI__LocalHostAuth: false
               # QBT_Preferences__WebUI__RootFolder: /addons/VueTorrent
             probes:
               liveness: &probes
@@ -66,16 +66,16 @@ spec:
                 drop:
                   - ALL
 
-          vuetorrent:
-            dependsOn: app
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.4.0
-            args:
-              - --repo=https://github.com/WDaan/VueTorrent
-              - --ref=latest-release
-              - --period=86400s
-              - --root=/addons
+          # vuetorrent:
+          #   dependsOn: app
+          #   image:
+          #     repository: registry.k8s.io/git-sync/git-sync
+          #     tag: v4.4.0
+          #   args:
+          #     - --repo=https://github.com/WDaan/VueTorrent
+          #     - --ref=latest-release
+          #     - --period=86400s
+          #     - --root=/addons
             resources:
               requests:
                 cpu: 10m
