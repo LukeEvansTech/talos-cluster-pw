@@ -116,31 +116,38 @@ spec:
                   httpGet:
                     path: /
                     port: 9999
-              readiness:
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              startup:
                 enabled: false
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: 9999
-                  initialDelaySeconds: 120
+                  initialDelaySeconds: 10
                   periodSeconds: 10
                   failureThreshold: 5
-            resources:
-              requests:
-                memory: 48Mi
-              limits:
-                memory: 96Mi
-                kernel.org/tun: 1
             restartPolicy: Always
             securityContext:
-              allowPrivilegeEscalation: false
               capabilities:
                 add:
                   - NET_ADMIN
+              allowPrivilegeEscalation: false
+            resources:
+              limits:
+                kernel.org/tun: 1
         pod:
           labels:
             gluetun: "true"
+
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 300
+      securityContext:
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+
     service:
       app:
         controller: sabnzbd

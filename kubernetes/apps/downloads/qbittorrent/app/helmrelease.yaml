@@ -143,6 +143,9 @@ spec:
             resources:
               limits:
                 kernel.org/tun: 1
+        pod:
+          labels:
+            gluetun: "true"
 
           # dnsdist:
           #   image:
