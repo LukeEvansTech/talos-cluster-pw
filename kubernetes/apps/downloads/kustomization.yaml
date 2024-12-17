@@ -9,7 +9,7 @@ resources:
   # - ./flaresolverr/ks.yaml
   # - ./kometa/ks.yaml
   # - ./maintainerr/ks.yaml
-  #- ./qbittorrent/ks.yaml
+  - ./qbittorrent/ks.yaml
   # - ./overseerr/ks.yaml
   # - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
