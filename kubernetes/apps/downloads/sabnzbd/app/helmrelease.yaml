@@ -83,23 +83,29 @@ spec:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.39.1
             env:
-              TZ: ${TIMEZONE}
+              # BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
+              DOT: off
+              DOT_CACHING: off
+              DOT_IPV6: off
+              # is absolutely needed if the container is expected to be able to resolve or communicate to any cluster services, without it cluster services cannot be resolved consistently or at all in many setups.
+              DNS_KEEP_NAMESERVER: on
               FIREWALL: true
               FIREWALL_DEBUG: on
-              DOT: on
-              # Comma separated list of ports to allow through the default interface. This seems needed for Kubernetes sidecars.
               FIREWALL_INPUT_PORTS: 80,9999
               FIREWALL_OUTBOUND_SUBNETS: "${CLUSTER_PODS_CIDR},${CLUSTER_SVCS_CIDR},${CR_LAN_CIDR},${GH_LAN_CIDR},${PW_LAN_CIDR}"
               HEALTH_SERVER_ADDRESS: ":9999"
+              HEALTH_SERVER_DISABLE_LOOP: on
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
-              # prevent memory spike and avoid I/O
-              # STORAGE_FILEPATH: ""
-              VPN_INTERFACE: wg0
-              VPN_TYPE: wireguard
+              #TODO - Enable when ready - https://github.com/qdm12/gluetun-wiki/blob/main/setup/options/others.md. Getting ""ERROR public ip check settings: API name: API name is not valid: "cloudflare" can only be "ipinfo" or "ip2location""
+              # PUBLICIP_API: cloudflare
+              # STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
+              TZ: ${TIMEZONE}
               UPDATER_PERIOD: 12h
-              # is absolutely needed if the container is expected to be able to resolve or communicate to any cluster services, without it cluster services cannot be resolved consistently or at all in many setups.
-              DNS_KEEP_NAMESERVER: on
+              VERSION_INFORMATION: off
+              VPN_INTERFACE: wg0
+              VPN_IPV6_SERVER: off
+              VPN_TYPE: wireguard
             envFrom:
               - secret: sabnzbd-secret
             probes:
