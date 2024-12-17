@@ -129,7 +129,10 @@ spec:
               limits:
                 kernel.org/tun: 1
           vuetorrent:
+<<<<<<< HEAD
             dependsOn: app
+=======
+>>>>>>> 04a15f09b741ab34873fb2b486c91bfbbae1a825
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.4.0
