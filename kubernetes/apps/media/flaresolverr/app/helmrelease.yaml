@@ -34,14 +34,36 @@ spec:
             image:
               repository: docker.io/21hsmw/flaresolverr
               tag: nodriver
+            env:
+              LOG_LEVEL: "info"
+              DRIVER: "nodriver"
+              #CAPTCHA_SOLVER: "harvester"
+              LANG: "en_GB"
+              TZ: "${TIMEZONE}"
+              PORT: &port "8191"
+              PROMETHEUS_ENABLED: "true"
+              PROMETHEUS_PORT: &metrics_port "8192"
             resources:
               requests:
                 cpu: 15m
                 memory: 150Mi
+
     service:
-      app:
-        controller: *app
-        type: ClusterIP
-        ports:
-          http:
-            port: 8191
+          app:
+            controller: *app
+            type: ClusterIP
+            ports:
+              http:
+                port: *port
+              metrics:
+                port: *metrics_port
+
+    serviceMonitor:
+          app:
+            serviceName: *app
+            endpoints:
+              - port: metrics
+                scheme: http
+                path: /metrics
+                interval: 30s
+                scrapeTimeout: 10s
