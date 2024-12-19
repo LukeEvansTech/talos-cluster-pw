@@ -59,7 +59,11 @@ spec:
         prometheusEndpoint: #http://thanos-query-frontend.observability.svc.cluster.local:10902
       mgr:
         modules:
+          - name: insights
+            enabled: true
           - name: pg_autoscaler
+            enabled: true
+          - name: rook
             enabled: true
       network:
         provider: host
