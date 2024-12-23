@@ -81,11 +81,12 @@ spec:
     persistence:
       models:
         enabled: true
-        existingClaim: ollama-models
-        advancedMounts:
-          ollama:
-            app:
-              - path: *modelPath
+        type: emptyDir
+        # existingClaim: ollama-models
+        # advancedMounts:
+        #   ollama:
+        #     app:
+        #       - path: *modelPath
       config:
         enabled: true
         existingClaim: ollama
