@@ -33,7 +33,7 @@ spec:
     controllers:
       prowlarr:
         labels:
-          postgres: "true"
+          gluetun: "true"
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:

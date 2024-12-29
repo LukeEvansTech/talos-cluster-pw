@@ -32,7 +32,6 @@ spec:
       radarr:
         labels:
           nfsMount: "true"
-          postgres: "true"
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
