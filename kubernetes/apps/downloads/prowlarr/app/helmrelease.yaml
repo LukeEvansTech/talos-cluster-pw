@@ -65,7 +65,9 @@ spec:
               VPN_INTERFACE: wg0
               VPN_IPV6_SERVER: off
               VPN_TYPE: wireguard
-            envFrom: *envFrom
+            envFrom: &envFrom
+              - secretRef:
+                  name: prowlarr-secret
             probes:
               liveness:
                 enabled: false
@@ -109,9 +111,7 @@ spec:
               PROWLARR__LOG__LEVEL: info
               PROWLARR__SERVER__PORT: &port 80
               PROWLARR__UPDATE__BRANCH: develop
-            envFrom:
-              - secretRef:
-                  name: prowlarr-secret
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: false
