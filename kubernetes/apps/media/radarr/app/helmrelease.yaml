@@ -116,8 +116,10 @@ spec:
                   identifier: app
                   port: http
     persistence:
+      # config:
+      #   existingClaim: radarr
       config:
-        existingClaim: radarr
+        type: emptyDir
       cache:
         existingClaim: radarr-cache
         globalMounts:
