@@ -22,6 +22,9 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
       gatus:
@@ -48,7 +51,7 @@ spec:
               UNIQUE_FILENAMES: true
               METHOD: WATCH
             restartPolicy: Always
-            resources: &resources
+            resources:
               requests:
                 cpu: 10m
               limits:
@@ -57,13 +60,15 @@ spec:
           app:
             image:
               repository: ghcr.io/twin/gatus
-              tag: v5.15.0
+              tag: v5.15.0@sha256:45686324db605e57dfa8b0931d8d57fe06298f52685f06aa9654a1f710d461bb
             env:
               TZ: ${TIMEZONE}
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
-              CUSTOM_WEB_PORT: &port 80
-            envFrom: *envFrom
+              WEB_PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -80,8 +85,12 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources: *resources
+              capabilities: { drop: [ALL] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
     defaultPodOptions:
       dnsConfig:
         options:
