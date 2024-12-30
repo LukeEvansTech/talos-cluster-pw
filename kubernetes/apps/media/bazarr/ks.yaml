@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: external-secrets-stores
     - name: volsync
-  path: ./kubernetes/apps/default/bazarr/app
+  path: ./kubernetes/apps/media/bazarr/app
   prune: true
   sourceRef:
     kind: GitRepository
