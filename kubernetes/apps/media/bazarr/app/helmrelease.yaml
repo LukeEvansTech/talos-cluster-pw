@@ -30,14 +30,6 @@ spec:
   values:
     controllers:
       bazarr:
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: bazarr-secret
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -46,46 +38,49 @@ spec:
               repository: ghcr.io/onedr0p/bazarr
               tag: 1.5.0
             env:
-              # BAZARR__AUTHENTICATION_METHOD: Forms
-              # BAZARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              # BAZARR__INSTANCE_NAME: Bazarr
               BAZARR__LOG_LEVEL: info
               BAZARR__THEME: dark
               TZ: ${TIMEZONE}
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: bazarr-secret
             probes:
-                liveness: &probes
-                  enabled: true
-                  custom: true
-                  spec:
-                    httpGet:
-                      path: /health
-                      port: &port 6767
-                    initialDelaySeconds: 0
-                    periodSeconds: 10
-                    timeoutSeconds: 1
-                    failureThreshold: 3
-                readiness: *probes
-            securityContext:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 6767
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: { drop: [ALL] }
             resources:
               requests:
                 cpu: 10m
-                memory: 204Mi
               limits:
                 memory: 1Gi
           subcleaner:
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
-              pullPolicy: IfNotPresent
-            args:
-              - --repo=https://github.com/KBlixt/subcleaner
-              - --ref=master
-              - --period=24h
-              - --root=/add-ons
+            env:
+              GITSYNC_REPO: https://github.com/KBlixt/subcleaner
+              GITSYNC_REF: master
+              GITSYNC_PERIOD: 24h
+              GITSYNC_ROOT: /subcleaner
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext: *securityContext
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -97,7 +92,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: *app
+        controller: bazarr
         ports:
           http:
             port: *port
@@ -129,8 +124,15 @@ spec:
                   identifier: app
                   port: http
     persistence:
+      subcleaner:
+        type: emptyDir
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /config/cache
       config:
-        existingClaim: *app
+        #existingClaim: *app
+        type: emptyDir
       add-ons:
         enabled: true
         type: emptyDir
