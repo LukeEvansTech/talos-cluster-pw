@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app bazarr
+  name: bazarr
 spec:
   interval: 30m
   chart:
@@ -131,8 +131,7 @@ spec:
         globalMounts:
           - path: /config/cache
       config:
-        #existingClaim: *app
-        type: emptyDir
+        existingClaim: bazarr
       add-ons:
         enabled: true
         type: emptyDir
