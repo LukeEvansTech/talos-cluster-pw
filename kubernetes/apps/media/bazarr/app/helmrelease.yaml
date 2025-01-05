@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/bazarr
-              tag: 1.5.0
+              tag: 1.5.1
             env:
               BAZARR__LOG_LEVEL: info
               BAZARR__THEME: dark
