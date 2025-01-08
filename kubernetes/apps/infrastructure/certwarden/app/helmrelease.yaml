@@ -30,7 +30,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/gregtwallace/certwarden:latest
+              repository: ghcr.io/gregtwallace/certwarden
               tag: latest
             resources:
               requests:
