@@ -16,6 +16,7 @@ resources:
   - ./linkwarden/ks.yaml
   - ./meilisearch/ks.yaml
   - ./miniflux/ks.yaml
+  - ./opengist/ks.yaml
   - ./searxng/ks.yaml
   - ./stirling-pdf/ks.yaml
   # - ./powershelluniversal/ks.yaml
