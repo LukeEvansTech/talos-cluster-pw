@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: descheduler
-      version: 0.31.0
+      version: 0.32.1
       sourceRef:
         kind: HelmRepository
         name: descheduler
@@ -39,7 +39,10 @@ spec:
             - name: RemoveFailedPods
               args:
                 reasons:
+                  # - "Completed"
                   - "ContainerStatusUnknown"
+                  - "Error"
+                  - "Init:ContainerStatusUnknown"
                   - "NodeAffinity"
                   - "Terminated"
                   - "UnexpectedAdmissionError"
