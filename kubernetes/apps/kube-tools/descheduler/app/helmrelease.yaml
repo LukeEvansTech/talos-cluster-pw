@@ -23,42 +23,71 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    replicas: 2
     kind: Deployment
+    replicas: 1
+    leaderElection: {}
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       profiles:
-        - name: Default
+        - name: default
           pluginConfig:
             - name: DefaultEvictor
               args:
                 evictFailedBarePods: true
                 evictLocalStoragePods: true
                 evictSystemCriticalPods: true
-                nodeFit: true
-            - name: RemovePodsViolatingInterPodAntiAffinity
+            - name: RemoveFailedPods
+              args:
+                reasons:
+                  - "ContainerStatusUnknown"
+                  - "NodeAffinity"
+                  - "Terminated"
+                  - "UnexpectedAdmissionError"
+                includingInitContainers: true
+                excludeOwnerKinds:
+                  - "Job"
+                minPodLifetimeSeconds: 3600
+            - name: RemovePodsHavingTooManyRestarts
+              args:
+                podRestartThreshold: 100
+                includingInitContainers: true
             - name: RemovePodsViolatingNodeAffinity
               args:
                 nodeAffinityType:
                   - requiredDuringSchedulingIgnoredDuringExecution
             - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingTopologySpreadConstraint
-              args:
-                constraints:
-                  - DoNotSchedule
-                  - ScheduleAnyway
           plugins:
             balance:
               enabled:
                 - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:
-                - RemovePodsViolatingInterPodAntiAffinity
-                - RemovePodsViolatingNodeAffinity
+                - RemoveFailedPods
+                - RemovePodsHavingTooManyRestarts
                 - RemovePodsViolatingNodeTaints
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingInterPodAntiAffinity
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
     service:
       enabled: true
     serviceMonitor:
       enabled: true
-    leaderElection:
-      enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          # helm chart version 0.32.0 lacks poddisruptionbudgets.policy perms
+          # https://github.com/kubernetes-sigs/descheduler/issues/1595
+          - target:
+              kind: ClusterRole
+            patch: |
+              - op: add
+                path: /rules/-
+                value:
+                  verbs: ["get", "watch", "list"]
+                  apiGroups: ["policy"]
+                  resources: ["poddisruptionbudgets"]
