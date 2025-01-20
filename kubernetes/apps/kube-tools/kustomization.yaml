@@ -10,7 +10,7 @@ resources:
   - ./descheduler/ks.yaml
   - ./fstrim/ks.yaml
   # - ./node-feature-discovery/ks.yaml
-  # # - ./powertune/ks.yaml
+  # - ./powertune/ks.yaml
   # - ./reloader/ks.yaml
   # - ./spegel/ks.yaml
   - ./system-upgrade-controller/ks.yaml
