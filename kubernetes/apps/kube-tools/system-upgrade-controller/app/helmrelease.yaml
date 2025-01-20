@@ -32,11 +32,11 @@ spec:
               repository: docker.io/rancher/system-upgrade-controller
               tag: v0.14.2@sha256:3cdbfdd90f814702cefb832fc4bdb09ea93865a4d06c6bafd019d1dc6a9f34c9
             env:
-              SYSTEM_UPGRADE_CONTROLLER_DEBUG: false
+              SYSTEM_UPGRADE_CONTROLLER_DEBUG: true
               SYSTEM_UPGRADE_CONTROLLER_THREADS: 2
               SYSTEM_UPGRADE_JOB_ACTIVE_DEADLINE_SECONDS: 900
-              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: 99
-              SYSTEM_UPGRADE_JOB_IMAGE_PULL_POLICY: IfNotPresent
+              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: 10
+              SYSTEM_UPGRADE_JOB_IMAGE_PULL_POLICY: Always
               SYSTEM_UPGRADE_JOB_KUBECTL_IMAGE: registry.k8s.io/kubectl:v1.32.1
               SYSTEM_UPGRADE_JOB_POD_REPLACEMENT_POLICY: Failed # Required for Talos
               SYSTEM_UPGRADE_JOB_PRIVILEGED: true
@@ -51,8 +51,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-              seccompProfile:
-                type: RuntimeDefault
+              seccompProfile: { type: RuntimeDefault }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -67,12 +66,12 @@ spec:
                   - key: node-role.kubernetes.io/control-plane
                     operator: Exists
       tolerations:
-        - key: CriticalAddonsOnly
-          operator: Exists
+        # - key: CriticalAddonsOnly
+        #   operator: Exists
+        # - key: node-role.kubernetes.io/master
+        #   operator: Exists
+        #   effect: NoSchedule
         - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
     serviceAccount:
