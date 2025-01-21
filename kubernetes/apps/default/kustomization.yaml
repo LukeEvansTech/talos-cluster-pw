@@ -14,7 +14,7 @@ resources:
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
   - ./linkwarden/ks.yaml
-  - ./meilisearch/ks.yaml
+  # - ./meilisearch/ks.yaml
   - ./miniflux/ks.yaml
   - ./opengist/ks.yaml
   - ./searxng/ks.yaml
