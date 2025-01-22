@@ -19,7 +19,7 @@ resources:
   - ./opengist/ks.yaml
   - ./searxng/ks.yaml
   - ./stirling-pdf/ks.yaml
-  # - ./powershelluniversal/ks.yaml
+  - ./powershelluniversal/ks.yaml
   # - ./theme-park/ks.yaml
   - ./uptimekuma/ks.yaml
   - ./wallos/ks.yaml
