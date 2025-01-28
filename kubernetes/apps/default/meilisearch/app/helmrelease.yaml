@@ -95,6 +95,8 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: *app
+        #existingClaim: *app
+        enabled: true
+        type: emptyDir
         globalMounts:
           - path: /meili_data
